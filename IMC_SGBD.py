@@ -1,7 +1,7 @@
 from tkinter import *
 from sqlite3 import *
 
-conn = connect('E:\PYTHON\IMC_BD\dbIMC.db')
+conn = connect('E:\PYTHON\IMC_BD\IMCDB.db')
 c = conn.cursor()
 
 prog = Tk()
@@ -38,10 +38,11 @@ def bt_cadastrar():
     (   Nome VARCHAR(100),
         Endereco VARCHAR(100),
         Altura FLOAT,
-        Peso INTEGER)'''
+        Peso INTEGER,
+        IMC FLOAT)'''
     c.execute(sql)
-    c.execute('INSERT INTO dadosIMC (Nome, Endereco, Altura, Peso) VALUES ("' + entNome.get() + '",\
-    "' + entEnd.get() + '","' + entAlt.get() + '","' + entPeso.get() + '")')
+    c.execute('INSERT INTO dadosIMC (Nome, Endereco, Altura, Peso, IMC) VALUES ("' + entNome.get() + '",\
+    "' + entEnd.get() + '","' + entAlt.get() + '","' + entPeso.get() + '","'+bdResultN.get()+'")')
     conn.commit()
 
 
@@ -50,7 +51,8 @@ def bt_click_calc():
         Alt = float(entAlt.get())
         Peso = int(entPeso.get())
         IMC = float(Peso / (Alt * Alt))
-        lbResulN["text"] = round(IMC, 2)
+        IMCRes = round(IMC, 2)
+        bdResultN.set(IMCRes)
         if IMC < 17:
             lbResulSit["text"] = "Muito Abaixo do Peso"
             lbResulSit.config(bg="yellow")
@@ -115,7 +117,9 @@ btReini.place(x=180, y=300)
 btCad = Button(prog, width=15, text="CADASTRAR", command=bt_cadastrar)
 btCad.place(x=330, y=300)
 
-lbResulN = Label(prog, text="IMC", width=11, height=5, bg="gray", font="arial 20 bold")
+bdResultN = StringVar()
+bdResultN.set("IMC")
+lbResulN = Label(prog, text="IMC", width=11, height=5, bg="gray", font="arial 20 bold", textvariable=bdResultN)
 lbResulN.place(x=390, y=130)
 
 lbResulSit = Label(prog, text="SITUAÇÃO", width=20, height=5, bg="gray", font="arial 20 bold")
