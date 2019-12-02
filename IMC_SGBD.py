@@ -1,7 +1,7 @@
 from tkinter import *
 from sqlite3 import *
 
-conn = connect('E:\PYTHON\IMC_BD\IMCDB.db')
+conn = connect('E:\PYTHON\IMC_BD\BD_IMC.db')
 c = conn.cursor()
 
 prog = Tk()
